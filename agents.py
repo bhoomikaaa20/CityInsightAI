@@ -25,7 +25,7 @@ def weather_tool(city:str)->str:
 
     print(data)
 
-    
+
     if str(data.get("cod")) != "200":
         return f"Error: {data.get('message', 'Could not fetch weather')}"
 
@@ -34,6 +34,34 @@ def weather_tool(city:str)->str:
 
     return f"weather in {city}: {temp} celcius,{desc}"
 
-res=weather_tool.invoke("Dublin")
-print(res)
+
+#news tool
+
+@tool
+def get_latest_news(city:str)->str:
+    """Fetch the latest news of the city given"""
+
+    tavily_client = TavilyClient(
+    api_key=os.getenv("TAVILY_API_KEY")
+    )
+
+    response=tavily_client.search(
+        query=f"Latest news of the {city}",
+        topic="news",
+        search_depth="basic",
+        max_results=3
+    )
+    results = response["results"]
+
+    news = ""
+
+    for result in response["results"]:
+        news += f"Headline: {result['title']}\n"
+        news += f"URL: {result['url']}\n"
+        news += f"About: {result['content'][:150]}...\n\n"
+
+
+    return news
+
+
 
