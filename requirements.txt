@@ -21,3 +21,4 @@ huggingface-hub
 langgraph
 jupyter
 ipykernel
+tavily-python
