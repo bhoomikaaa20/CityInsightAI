@@ -22,7 +22,18 @@ def weather_tool(city:str)->str:
 
     response=requests.get(url)
     data=response.json()
+
     print(data)
 
-res=weather_tool.invoke("Dubai")
+    
+    if str(data.get("cod")) != "200":
+        return f"Error: {data.get('message', 'Could not fetch weather')}"
+
+    temp=data["main"]["temp"]
+    desc=data["weather"][0]["description"]
+
+    return f"weather in {city}: {temp} celcius,{desc}"
+
+res=weather_tool.invoke("Dublin")
 print(res)
+
